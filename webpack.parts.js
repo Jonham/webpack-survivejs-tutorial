@@ -33,6 +33,14 @@ exports.extractCSS = ({ options = {}, loaders = [] } = {}) => {
     module: {
       rules: [
         {
+          test: /\.css$/,
+          use: [
+            { loader: MiniCssExtractPlugin.loader, options },
+            "css-loader",
+          ].concat(loaders),
+          sideEffects: true,
+        },
+        {
           test: /\.less$/,
           use: [
             { loader: MiniCssExtractPlugin.loader, options },
@@ -50,3 +58,10 @@ exports.extractCSS = ({ options = {}, loaders = [] } = {}) => {
     ],
   };
 };
+
+exports.tailwind = () => ({
+  loader: "postcss-loader",
+  options: {
+    postcssOptions: { plugins: [require("tailwindcss")()] },
+  },
+});
